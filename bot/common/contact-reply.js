@@ -43,11 +43,6 @@ async function getContactTextReply(that, talker, content) {
     //     url: 'https://github.com/wechaty/wechaty',
     // });
     const rooms = await getRoomList(that);
-    const aa = await findRoom(
-        that,
-        "@@6ab29397570b5672d1b53945432b5ce1326dc43682bf3de4dff4c3579afa4325"
-    );
-    console.log(aa);
     let replay = "";
     switch (content) {
         case "掘金热点":

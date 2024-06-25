@@ -69,10 +69,10 @@ async function articlesRecommend(that) {
     const list = config.JUNJIN_CRAWING;
     if (list.length) {
         for (const item of list) {
-            const { id, date } = item;
+            const { name, date } = item;
             setSchedule(date, async () => {
                 const message = await getJuejinCrawlingMsg();
-                const room = await findRoom(that, id);
+                const room = await findRoom(that, name);
                 if (room && message) {
                     room.say(message);
                 }

@@ -18,8 +18,8 @@ async function getFriendList(that) {
     console.log(`好友数量: ${friendList.length}`);
 }
 
-async function findRoom(that, id) {
-    const room = await that.Room.find({ id: id });
+async function findRoom(that, name) {
+    const room = await that.Room.find({ topic: name });
     return room;
 }
 
