@@ -57,7 +57,7 @@ module.exports = {
             time: "17:30",
             users: [
                 {
-                    name: "yudengmiao",
+                    name: "LMMyeah321",
                 },
             ],
             remindTimes: [30, 15, 0],
