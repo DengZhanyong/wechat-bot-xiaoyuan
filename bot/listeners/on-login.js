@@ -1,6 +1,6 @@
 const { findContact, findRoom } = require("../common");
 const { setSchedule } = require("../utils");
-const { getJuejinCrawlingMsg } = require("../utils/crawling");
+const { getJuejinCrawlingMsg } = require("../utils/replay");
 const config = require("../wechat.config");
 const dayjs = require("dayjs");
 
@@ -69,9 +69,9 @@ async function articlesRecommend(that) {
     const list = config.JUNJIN_CRAWING;
     if (list.length) {
         for (const item of list) {
-            const { name, date } = item;
+            const { title, name, date, count } = item;
             setSchedule(date, async () => {
-                const message = await getJuejinCrawlingMsg();
+                const message = await getJuejinCrawlingMsg(title, count);
                 const room = await findRoom(that, name);
                 if (room && message) {
                     room.say(message);

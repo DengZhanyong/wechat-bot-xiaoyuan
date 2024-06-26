@@ -3,7 +3,7 @@ module.exports = {
     AUTOREPLY: false, // 是否设置机器人自动回复，默认关闭 false  开启为 true
     DEFAULTBOT: "0", // 默认机器人 0 天行机器人 1 天行对接的图灵机器人 2 图灵机器人
     TULINGKEY: "", //图灵机器人KEY
-    TXAPIKEY: "762be789103e1ae7b65573f8d4fc0df6", // 必填，天行数据key，目前贡献的是我个人的，建议申请自己的天行数据key，可以对机器人个性化定制
+    TXAPIKEY: "4cebe352636311f3650eb66f08520143", // 必填，天行数据key，目前贡献的是我个人的，建议申请自己的天行数据key，可以对机器人个性化定制
     SCHEDULE_LIST: [
         {
             name: "馒头老爸",
@@ -34,11 +34,15 @@ module.exports = {
             name: "前端筱园交流群",
             id: "@@6ab29397570b5672d1b53945432b5ce1326dc43682bf3de4dff4c3579afa4325",
             date: "0 30 8 * * *",
+            count: 5,
+            title: "今日推荐掘金文章：",
         },
         {
             name: "机器人开发",
             id: "@@f35ce467ab5e09848229ee29f345e103c368b1ca8fb9f83427e63647103d8d46",
-            date: "0 30 8 * * *",
+            date: "0 * * * * *",
+            count: 5,
+            title: "今日推荐掘金文章：",
         },
     ],
     // 下班倒计时提醒
@@ -57,7 +61,7 @@ module.exports = {
             time: "17:30",
             users: [
                 {
-                    name: "LMMyeah321",
+                    name: "余登苗",
                 },
             ],
             remindTimes: [30, 15, 0],

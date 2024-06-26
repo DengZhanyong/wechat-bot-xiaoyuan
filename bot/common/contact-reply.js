@@ -1,10 +1,5 @@
-const { FileBox } = require("file-box");
-const { findTalker, getFriendList, getRoomList, findRoom } = require(".");
-const { queryArticles } = require("../server/blog");
-const { getEmo } = require("../proxy/api");
 const wechaty = require("wechaty");
-const { UrlLinkImpl } = require("wechaty/impls");
-const { getJujinData, replayJuejinCrawling } = require("../utils/crawling");
+const { matchKeywordReply } = require("../utils");
 
 /**
  *
@@ -42,12 +37,7 @@ async function getContactTextReply(that, talker, content) {
     //     title: 'Welcome to Wechaty',
     //     url: 'https://github.com/wechaty/wechaty',
     // });
-    const rooms = await getRoomList(that);
-    let replay = "";
-    switch (content) {
-        case "掘金热点":
-            replay = await getJuejinCrawlingMsg();
-    }
+    let replay = await matchKeywordReply(content);
     return replay;
 }
 

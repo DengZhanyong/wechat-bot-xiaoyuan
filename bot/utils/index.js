@@ -1,32 +1,7 @@
 const schedule = require("node-schedule");
+const { getJuejinCrawlingMsg, getOneJoke } = require("./replay");
 
-/**
- * 设置定时器
- * @param {*} date 日期
- * @param {*} callback 回调
- */
-//其他规则见 https://www.npmjs.com/package/node-schedule
-// 规则参数讲解    *代表通配符
-//
-// * * * * * *
-// ┬ ┬ ┬ ┬ ┬ ┬
-// │ │ │ │ │  |
-// │ │ │ │ │ └ day of week (0 - 7) (0 or 7 is Sun)
-// │ │ │ │ └───── month (1 - 12)
-// │ │ │ └────────── day of month (1 - 31)
-// │ │ └─────────────── hour (0 - 23)
-// │ └──────────────────── minute (0 - 59)
-// └───────────────────────── second (0 - 59, OPTIONAL)
-
-// 每分钟的第30秒触发： '30 * * * * *'
-//
-// 每小时的1分30秒触发 ：'30 1 * * * *'
-//
-// 每天的凌晨1点1分30秒触发 ：'30 1 1 * * *'
-//
-// 每月的1日1点1分30秒触发 ：'30 1 1 1 * *'
-//
-// 每周1的1点1分30秒触发 ：'30 1 1 * * 1'
+const HELP_TEXT = `目前支持发送关键词触发相应功能，包括：掘金热点、笑话`;
 
 function setSchedule(date, callback) {
     schedule.scheduleJob(date, callback);
@@ -39,7 +14,27 @@ async function delay(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
+async function matchKeywordReply(text) {
+    let replay = "";
+    // 全匹配
+    switch (text) {
+        case "帮助":
+            replay = HELP_TEXT;
+            break;
+    }
+    if (replay) return replay;
+    // 模糊匹配
+    if (text.includes("笑话")) {
+        return await getOneJoke();
+    }
+    if (text.includes("掘金")) {
+        const count = text.match(/\d+/g)?.[0] || 3;
+        return await getJuejinCrawlingMsg("为你推荐掘金文章：", count);
+    }
+}
+
 module.exports = {
     setSchedule,
     delay,
+    matchKeywordReply,
 };
