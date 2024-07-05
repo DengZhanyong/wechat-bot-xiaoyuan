@@ -1,4 +1,5 @@
 const api = require("../proxy/api");
+const { matchKeywordReply } = require("../utils");
 const { findTalker } = require("./index");
 
 /**
@@ -10,7 +11,8 @@ const { findTalker } = require("./index");
  * @returns
  */
 async function getRoomTextReply(that, room, msg) {
-    // room.say('1111', msg.);
+    let replay = await matchKeywordReply(msg);
+    return replay;
 }
 
 async function replayImage() {}

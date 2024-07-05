@@ -1,6 +1,7 @@
+const { isArray } = require("lodash");
 const { findContact, findRoom } = require("../common");
 const { setSchedule } = require("../utils");
-const { getJuejinCrawlingMsg } = require("../utils/replay");
+const { getJuejinCrawlingMsg, getTodayLeetCode } = require("../utils/replay");
 const config = require("../wechat.config");
 const dayjs = require("dayjs");
 
@@ -75,6 +76,33 @@ async function articlesRecommend(that) {
                 const room = await findRoom(that, name);
                 if (room && message) {
                     room.say(message);
+                }
+            });
+        }
+    }
+}
+
+/**
+ * 每日一题推荐
+ * @param {*} that
+ */
+async function articlesRecommend(that) {
+    console.log("开启每日一题推荐");
+    const list = config.LEETCODE_RECOMMEND;
+    if (list.length) {
+        for (const item of list) {
+            const { title, name, date, count } = item;
+            setSchedule(date, async () => {
+                const message = await getTodayLeetCode();
+                const room = await findRoom(that, name);
+                if (room && message) {
+                    if (isArray(message)) {
+                        for (const item of message) {
+                            await room.say(item);
+                        }
+                    } else {
+                        room.say(message);
+                    }
                 }
             });
         }

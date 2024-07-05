@@ -1,6 +1,7 @@
 const { log } = require("wechaty");
 const { getContactTextReply } = require("../common/contact-reply");
 const { getRoomTextReply } = require("../common/room-reply");
+const { isArray, forIn } = require("lodash");
 
 async function dispatchFriendFilterByMsgType(that, msg) {
     try {
@@ -23,7 +24,13 @@ async function dispatchFriendFilterByMsgType(that, msg) {
                         msg
                     );
                     if (reply) {
-                        talker.say(reply);
+                        if (isArray(reply)) {
+                            for (const item of reply) {
+                                await talker.say(item);
+                            }
+                        } else {
+                            talker.say(reply);
+                        }
                     }
                 }
                 break;
@@ -67,11 +74,17 @@ async function dispatchRoomFilterByMsgType(that, room, msg) {
         if (mentionSelf) {
             // 获取@我的话
             content = content.replace(/@[^,，：:\s@]+/g, "").trim();
-            const reply = await getRoomTextReply(that, room, msg);
-            room.say(reply, talkerId);
-            // if (typeof reply === "object") {
-            //     room.say(reply);
-            // }
+            const reply = await getRoomTextReply(that, room, content);
+            // room.say(reply);
+            if (reply) {
+                if (isArray(reply)) {
+                    for (const item of reply) {
+                        await room.say(item);
+                    }
+                } else {
+                    room.say(reply);
+                }
+            }
         }
     }
 }
@@ -81,7 +94,7 @@ async function onMessage(msg) {
     const msgSelf = msg.self(); // 是否自己发给自己的消息
     if (msgSelf) return;
     if (room) {
-        // await dispatchRoomFilterByMsgType(this, room, msg);
+        await dispatchRoomFilterByMsgType(this, room, msg);
     } else {
         await dispatchFriendFilterByMsgType(this, msg);
     }
