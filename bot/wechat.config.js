@@ -47,16 +47,16 @@ module.exports = {
         // },
     ],
     LEETCODE_RECOMMEND: [
-        {
-            name: "前端筱园交流群",
-            id: "@@6ab29397570b5672d1b53945432b5ce1326dc43682bf3de4dff4c3579afa4325",
-            date: "0 30 8 * * *",
-        },
         // {
-        //     name: "机器人开发",
-        //     id: "@@f35ce467ab5e09848229ee29f345e103c368b1ca8fb9f83427e63647103d8d46",
-        //     date: "0 38 9 * * *",
+        //     name: "前端筱园交流群",
+        //     id: "@@6ab29397570b5672d1b53945432b5ce1326dc43682bf3de4dff4c3579afa4325",
+        //     date: "0 30 8 * * *",
         // },
+        {
+            name: "机器人开发",
+            id: "@@f35ce467ab5e09848229ee29f345e103c368b1ca8fb9f83427e63647103d8d46",
+            date: "0 25 17 * * *",
+        },
     ],
     // 下班倒计时提醒
     COUNTDOWN_WORK_LIST: [
