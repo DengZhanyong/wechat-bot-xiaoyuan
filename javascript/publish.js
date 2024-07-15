@@ -42,7 +42,7 @@ const runConfig = [
     //   spinText: "设置node版本",
     // },
     {
-        command: "yarn",
+        command: "npm install",
         cwd: `${remoteBasePath}/package`,
         spinText: "安装依赖",
     },

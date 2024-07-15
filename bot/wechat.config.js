@@ -34,41 +34,44 @@ module.exports = {
         {
             name: "前端筱园交流群",
             id: "@@6ab29397570b5672d1b53945432b5ce1326dc43682bf3de4dff4c3579afa4325",
-            date: "0 0 8 * * *",
+            date: "0 0 11 * * *",
             count: 5,
             title: "今日推荐掘金文章：",
         },
-        // {
-        //     name: "机器人开发",
-        //     id: "@@f35ce467ab5e09848229ee29f345e103c368b1ca8fb9f83427e63647103d8d46",
-        //     date: "0 * * * * *",
-        //     count: 5,
-        //     title: "今日推荐掘金文章：",
-        // },
-    ],
-    LEETCODE_RECOMMEND: [
-        // {
-        //     name: "前端筱园交流群",
-        //     id: "@@6ab29397570b5672d1b53945432b5ce1326dc43682bf3de4dff4c3579afa4325",
-        //     date: "0 30 8 * * *",
-        // },
         {
             name: "机器人开发",
             id: "@@f35ce467ab5e09848229ee29f345e103c368b1ca8fb9f83427e63647103d8d46",
-            date: "0 25 17 * * *",
+            date: "0 55 10 * * *",
+            count: 5,
+            title: "今日推荐掘金文章：",
+        },
+    ],
+    LEETCODE_PUSH_LIST: [
+        {
+            name: "前端筱园交流群",
+            id: "@@6ab29397570b5672d1b53945432b5ce1326dc43682bf3de4dff4c3579afa4325",
+            date: "0 12 9 * * *",
+        },
+        {
+            name: "机器人开发",
+            id: "@@f35ce467ab5e09848229ee29f345e103c368b1ca8fb9f83427e63647103d8d46",
+            date: "0 0 9 * * *",
         },
     ],
     // 下班倒计时提醒
     COUNTDOWN_WORK_LIST: [
         {
-            time: "18:00",
+            time: "16:00",
             users: [
                 {
                     name: "馒头老爸",
                 },
             ],
             remindTimes: [30, 15, 0],
-            date: "0 * * * * *",
+            date: {
+                second: 0,
+                dayOfWeek: [1, 2, 3, 4, 5],
+            },
         },
         {
             time: "17:30",
@@ -79,6 +82,10 @@ module.exports = {
             ],
             remindTimes: [30, 15, 0],
             date: "0 * * * * *",
+            date: {
+                second: 0,
+                dayOfWeek: [1, 2, 3, 4, 5],
+            },
         },
         {
             time: "17:15",
@@ -87,7 +94,10 @@ module.exports = {
                     name: "黄晓颖",
                 },
             ],
-            date: "0 * * * * *",
+            date: {
+                second: 0,
+                dayOfWeek: [1, 2, 3, 4, 5],
+            },
             remindTimes: [30, 15, 0],
         },
     ],
@@ -132,30 +142,26 @@ module.exports = {
             date: "0 * * * * *",
         },
     ],
-    /**
-     * 自动添加好友关键词，留空代表同意任何好友请求
-     */
-    ACCEPTFRIEND: [],
-    /**
-     * 好友进群通知，可配置多个
-     */
-    ROOMJOINLIST: [
-        { name: "群名", welcome: "有什么问题都可以群里提出，大家都是很热情的" },
+    FISHING_SITES_PUSH_LIST: [
+        {
+            name: "前端筱园交流群",
+            id: "@@6ab29397570b5672d1b53945432b5ce1326dc43682bf3de4dff4c3579afa4325",
+            date: {
+                minute: 0,
+                hour: 15,
+                dayOfWeek: [1, 2, 3, 4, 5],
+            },
+            title: "----放松时间到----",
+        },
+        {
+            name: "机器人开发",
+            id: "@@f35ce467ab5e09848229ee29f345e103c368b1ca8fb9f83427e63647103d8d46",
+            date: {
+                minute: 35,
+                hour: 15,
+                dayOfWeek: [1, 2, 3, 4, 5],
+            },
+            title: "----放松时间到----",
+        },
     ],
-    /**
-     * 关键词回复列表
-     * key: 多个关键词触发相同内容，非模糊匹配，为全匹配
-     * reply: 回复内容
-     */
-    KEYWORDLIST: [{ key: ["你好", "您好"], reply: "你好啊，我是小助手雷欧" }],
-    /**
-     * 新通过好友，默认发送消息
-     */
-    NEWFRIENDREPLY: "你好，请问有什么可以帮助的",
-    /**
-     * 关键词加群配置
-     * key: 多个关键词触发相加群操作，全匹配
-     * roomName: 发送邀请的群名
-     */
-    ADDROOMKEYLIST: [{ key: ["加群"], roomName: "群名" }],
 };

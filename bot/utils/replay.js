@@ -10,6 +10,7 @@ const {
 const puppeteer = require("puppeteer");
 const { FileBox } = require("file-box");
 const { BoredFishingSitesList } = require("./constant");
+const { websiteScreenshot } = require("./website");
 
 const questionImage = "bot/images/question.png";
 
@@ -96,23 +97,22 @@ async function getTodayLeetCode() {
     const data = await fetchTodayLeetCode();
     if (!data) return "";
     const question = data.question;
-    const { title, titleCn, titleSlug, difficulty, acRate } = question;
+    const { titleCn, titleSlug, difficulty, acRate } = question;
     const detail = await fetchLeetCodeQuestionDetail(titleSlug);
     if (!detail) return "";
     // 截图
     const { translatedTitle, translatedContent } = detail;
 
-    const imagePath = questionImage;
-    const imageFileBox = FileBox.fromFile(imagePath);
-    let difficultyCn = "简单";
+    let difficultyCn = "未知";
+    console.log(difficulty);
     switch (difficulty) {
         case "Hard":
             difficultyCn = "困难";
             break;
-        case "MEDIUM":
+        case "Medium":
             difficultyCn = "中等";
             break;
-        case "EASY":
+        case "Easy":
             difficultyCn = "简单";
             break;
         default:
@@ -126,6 +126,8 @@ async function getTodayLeetCode() {
             <img src="https://resource.dengzhanyong.com/images/9ce7efc7-d880-470d-8864-9c29e242c4f5.png" style="height:120px;"/>
         </div>`
     );
+    const imagePath = questionImage;
+    const imageFileBox = FileBox.fromFile(imagePath);
     const url = `https://leetcode.cn/problems/${titleSlug}/description`;
     const text = `----每日一题----\n题目：${titleCn}\n难度：${difficultyCn}\n通过率：${Number(
         acRate * 100
@@ -175,7 +177,9 @@ async function getRandomQuestion() {
 
 async function htmlText2Image(content) {
     // 启动一个新的浏览器实例
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({
+        args: ["--no-sandbox"],
+    });
     // 创建一个新的页面
     const page = await browser.newPage();
     // 设置要渲染的HTML内容;
@@ -183,9 +187,15 @@ async function htmlText2Image(content) {
         <!DOCTYPE html>
         <html>
           <head>
+            <meta charset="UTF-8">
             <title>Example HTML</title>
+            <style>
+                pre {
+                    white-space: pre-wrap;
+                }
+            </style>
           </head>
-          <body style="position:relate">
+          <body>
             ${content}
           </body>
         </html>
@@ -202,10 +212,15 @@ async function htmlText2Image(content) {
 }
 
 // 获取无聊摸鱼网站
-function getBoredFishing() {
+async function getBoredFishing() {
     const len = BoredFishingSitesList.length;
     const index = Math.floor(Math.random() * len);
-    return `为你随机推荐一个无聊摸鱼网站：${BoredFishingSitesList[index]}`;
+    const url = BoredFishingSitesList[index];
+    const screenshot = await websiteScreenshot(
+        url,
+        `bot/images/websiteScreenshot_${index}.png`
+    );
+    return [`为你随机推荐一个放松摸鱼网站：${url}`, screenshot];
 }
 
 module.exports = {

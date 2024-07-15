@@ -11,7 +11,15 @@ const {
 const { HELP_TEXT } = require("./constant");
 
 function setSchedule(date, callback) {
-    schedule.scheduleJob(date, callback);
+    let _date = date;
+    if (typeof date === "object") {
+        _date = new schedule.RecurrenceRule();
+        for (const key in date) {
+            _date[key] = date[key];
+        }
+    }
+
+    schedule.scheduleJob(_date, callback);
 }
 /**
  * 延时函数
@@ -37,11 +45,13 @@ async function matchKeywordReply(text) {
         case "每日一题":
             replay = await getTodayLeetCode();
             break;
-        case "随机题":
+        case "随机出题":
             replay = "此功能正在建造中，敬请期待...";
             // replay = await getRandomQuestion();
             break;
         case "无聊摸鱼":
+        case "无聊网站":
+        case "摸鱼网站":
             replay = await getBoredFishing();
             break;
     }

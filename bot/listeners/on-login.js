@@ -1,7 +1,11 @@
 const { isArray } = require("lodash");
 const { findContact, findRoom } = require("../common");
 const { setSchedule } = require("../utils");
-const { getJuejinCrawlingMsg, getTodayLeetCode } = require("../utils/replay");
+const {
+    getJuejinCrawlingMsg,
+    getTodayLeetCode,
+    getBoredFishing,
+} = require("../utils/replay");
 const config = require("../wechat.config");
 const dayjs = require("dayjs");
 
@@ -72,6 +76,7 @@ async function articlesRecommend(that) {
         for (const item of list) {
             const { title, name, date, count } = item;
             setSchedule(date, async () => {
+                console.log(1);
                 const message = await getJuejinCrawlingMsg(title, count);
                 const room = await findRoom(that, name);
                 if (room && message) {
@@ -86,9 +91,9 @@ async function articlesRecommend(that) {
  * 每日一题推荐
  * @param {*} that
  */
-async function articlesRecommend(that) {
+async function leetCodePush(that) {
     console.log("开启每日一题推荐");
-    const list = config.LEETCODE_RECOMMEND;
+    const list = config.LEETCODE_PUSH_LIST;
     if (list.length) {
         for (const item of list) {
             const { title, name, date, count } = item;
@@ -110,6 +115,32 @@ async function articlesRecommend(that) {
 }
 
 /**
+ * 每日一题推荐
+ * @param {*} that
+ */
+async function fishingSitePush(that) {
+    console.log("开启每日摸鱼网站推荐");
+    const list = config.FISHING_SITES_PUSH_LIST;
+    if (list.length) {
+        for (const item of list) {
+            const { title, name, date } = item;
+            setSchedule(date, async () => {
+                const message = await getBoredFishing();
+                const room = await findRoom(that, name);
+                message[0] = `${title}\n${message[0]}`;
+                if (isArray(message)) {
+                    for (const item of message) {
+                        await room.say(item);
+                    }
+                } else {
+                    room.say(message);
+                }
+            });
+        }
+    }
+}
+
+/**
  * 初始化定时任务
  * @param {*} that
  */
@@ -117,6 +148,8 @@ async function initSchedule(that) {
     initMemorialTask(that);
     initWorkTask(that);
     articlesRecommend(that);
+    leetCodePush(that);
+    fishingSitePush(that);
 }
 
 /**
