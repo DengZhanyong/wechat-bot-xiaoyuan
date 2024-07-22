@@ -52,7 +52,7 @@ async function fetchRandomLeetCodeQuestion() {
 }
 
 // 查询题目内容
-async function fetchLeetCodeQuestionDetail(titleSlug) {
+async function fetchLeetCodeQuestionContent(titleSlug) {
     const url = "https://leetcode.cn/graphql/";
     return new Promise((resolve) => {
         axios
@@ -77,8 +77,8 @@ async function fetchLeetCodeQuestionDetail(titleSlug) {
     });
 }
 
-// 查询题目信息
-async function fetchLeetCodeQuestionInfo(titleSlug) {
+// 查询题目详情
+async function fetchLeetCodeQuestionDetail(titleSlug) {
     const url = "https://leetcode.cn/graphql/";
     return new Promise((resolve) => {
         axios
@@ -107,5 +107,5 @@ module.exports = {
     fetchTodayLeetCode,
     fetchRandomLeetCodeQuestion,
     fetchLeetCodeQuestionDetail,
-    fetchLeetCodeQuestionInfo,
+    fetchLeetCodeQuestionContent,
 };

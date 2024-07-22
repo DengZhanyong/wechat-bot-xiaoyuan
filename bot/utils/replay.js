@@ -6,13 +6,15 @@ const {
     fetchTodayLeetCode,
     fetchLeetCodeQuestionDetail,
     fetchRandomLeetCodeQuestion,
+    fetchLeetCodeQuestionContent,
+    fetchLeetCodeQuestionInfo,
 } = require("../server/leetcode");
 const puppeteer = require("puppeteer");
 const { FileBox } = require("file-box");
 const { BoredFishingSitesList } = require("./constant");
 const { websiteScreenshot } = require("./website");
 
-const questionImage = "bot/images/question.png";
+// const questionImage = "bot/images/question.png";
 
 async function getJujinData() {
     const url =
@@ -104,7 +106,6 @@ async function getTodayLeetCode() {
     const { translatedTitle, translatedContent } = detail;
 
     let difficultyCn = "未知";
-    console.log(difficulty);
     switch (difficulty) {
         case "Hard":
             difficultyCn = "困难";
@@ -118,15 +119,16 @@ async function getTodayLeetCode() {
         default:
             break;
     }
+    const imagePath = "bot/images/question.png";
     await htmlText2Image(
         `<h1>${translatedTitle}&nbsp;&nbsp;<span style="font-size:18px;font-weight:400">难度：${difficultyCn}&nbsp;&nbsp;通过率：${Number(
             acRate * 100
         ).toFixed(2)}%</span></h1>${translatedContent}
         <div style="text-align:center;">
-            <img src="https://resource.dengzhanyong.com/images/9ce7efc7-d880-470d-8864-9c29e242c4f5.png" style="height:120px;"/>
-        </div>`
+            <img src="https://resource.dengzhanyong.com/images/21e1c8b3-402e-4550-99e2-0827e1dbcfaa.png" style="height:120px;"/>
+        </div>`,
+        imagePath
     );
-    const imagePath = questionImage;
     const imageFileBox = FileBox.fromFile(imagePath);
     const url = `https://leetcode.cn/problems/${titleSlug}/description`;
     const text = `----每日一题----\n题目：${titleCn}\n难度：${difficultyCn}\n通过率：${Number(
@@ -135,25 +137,18 @@ async function getTodayLeetCode() {
     return [imageFileBox, text];
 }
 
-// 获取今天LeetCode题目
+// 随机获取leetcode题目
 async function getRandomQuestion() {
-    const data = await fetchRandomLeetCodeQuestion();
-    if (!data) return "";
-    console.log(data);
-    const question = data.question;
-    const { title, titleCn, titleSlug, difficulty, acRate } = question;
-    const detail = await fetchLeetCodeQuestionDetail(titleSlug);
+    const titleSlug = await fetchRandomLeetCodeQuestion();
+    if (!titleSlug) return "";
+    const content = await fetchLeetCodeQuestionDetail(titleSlug);
+    const { translatedTitle, translatedContent } = content;
+    if (!translatedContent) return await getRandomQuestion();
+    const detail = await fetchLeetCodeQuestionInfo(titleSlug);
     if (!detail) return "";
     // 截图
-    const { translatedTitle, translatedContent } = detail;
-    await htmlText2Image(
-        `<h1>${translatedTitle}<span style="font-size:18px;">难度：${difficultyCn}&nbsp;&nbsp;通过率：${Number(
-            acRate * 100
-        ).toFixed(2)}%</span></h1>
-        ${translatedContent}<p style="text-align:right">前端筱园交流群</p>`
-    );
-    const imagePath = questionImage;
-    const imageFileBox = FileBox.fromFile(imagePath);
+    const { difficulty } = detail;
+
     let difficultyCn = "简单";
     switch (difficulty) {
         case "Hard":
@@ -168,14 +163,22 @@ async function getRandomQuestion() {
         default:
             break;
     }
+    const imagePath = "bot/images/randomQuestion.png";
+    await htmlText2Image(
+        `<h1>${translatedTitle}&nbsp;&nbsp;<span style="font-size:18px;font-weight:400">难度：${difficultyCn}</span></h1>${translatedContent}
+        <div style="text-align:center;">
+            <img src="https://resource.dengzhanyong.com/images/21e1c8b3-402e-4550-99e2-0827e1dbcfaa.png" style="height:120px;"/>
+        </div>`,
+        imagePath
+    );
+    const imageFileBox = FileBox.fromFile(imagePath);
+
     const url = `https://leetcode.cn/problems/${titleSlug}/description`;
-    const text = `----每日一题----\n题目：${titleCn}\n难度：${difficultyCn}\n通过率：${Number(
-        acRate * 100
-    ).toFixed(2)}%\n解题地址：${url}`;
+    const text = `----随机出题----\n题目：${translatedTitle}\n难度：${difficultyCn}\n解题地址：${url}`;
     return [imageFileBox, text];
 }
 
-async function htmlText2Image(content) {
+async function htmlText2Image(content, imagePath) {
     // 启动一个新的浏览器实例
     const browser = await puppeteer.launch({
         args: ["--no-sandbox"],
@@ -204,7 +207,7 @@ async function htmlText2Image(content) {
     await page.setContent(htmlContent);
     // 将页面渲染为图片并保存到文件
     await page.screenshot({
-        path: questionImage,
+        path: imagePath,
         fullPage: true,
     });
     // 关闭浏览器

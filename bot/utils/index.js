@@ -46,8 +46,7 @@ async function matchKeywordReply(text) {
             replay = await getTodayLeetCode();
             break;
         case "随机出题":
-            replay = "此功能正在建造中，敬请期待...";
-            // replay = await getRandomQuestion();
+            replay = await getRandomQuestion();
             break;
         case "无聊摸鱼":
         case "无聊网站":
