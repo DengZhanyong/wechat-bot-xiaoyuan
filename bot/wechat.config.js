@@ -50,7 +50,7 @@ module.exports = {
         {
             name: "前端筱园交流群",
             id: "@@6ab29397570b5672d1b53945432b5ce1326dc43682bf3de4dff4c3579afa4325",
-            date: "0 30 9 * * *",
+            date: "0 11 9 * * *",
         },
         {
             name: "机器人开发",
@@ -142,26 +142,26 @@ module.exports = {
             date: "0 * * * * *",
         },
     ],
-    FISHING_SITES_PUSH_LIST: [
-        {
-            name: "前端筱园交流群",
-            id: "@@6ab29397570b5672d1b53945432b5ce1326dc43682bf3de4dff4c3579afa4325",
-            date: {
-                minute: 0,
-                hour: 15,
-                dayOfWeek: [1, 2, 3, 4, 5],
-            },
-            title: "----放松时间到----",
-        },
-        {
-            name: "机器人开发",
-            id: "@@f35ce467ab5e09848229ee29f345e103c368b1ca8fb9f83427e63647103d8d46",
-            date: {
-                minute: 35,
-                hour: 15,
-                dayOfWeek: [1, 2, 3, 4, 5],
-            },
-            title: "----放松时间到----",
-        },
-    ],
+    // FISHING_SITES_PUSH_LIST: [
+    //     {
+    //         name: "前端筱园交流群",
+    //         id: "@@6ab29397570b5672d1b53945432b5ce1326dc43682bf3de4dff4c3579afa4325",
+    //         date: {
+    //             minute: 0,
+    //             hour: 15,
+    //             dayOfWeek: [1, 2, 3, 4, 5],
+    //         },
+    //         title: "----放松时间到----",
+    //     },
+    //     {
+    //         name: "机器人开发",
+    //         id: "@@f35ce467ab5e09848229ee29f345e103c368b1ca8fb9f83427e63647103d8d46",
+    //         date: {
+    //             minute: 35,
+    //             hour: 15,
+    //             dayOfWeek: [1, 2, 3, 4, 5],
+    //         },
+    //         title: "----放松时间到----",
+    //     },
+    // ],
 };
