@@ -120,7 +120,7 @@ async function leetCodePush(that) {
  */
 async function fishingSitePush(that) {
     console.log("开启每日摸鱼网站推荐");
-    const list = config.FISHING_SITES_PUSH_LIST;
+    const list = config.FISHING_SITES_PUSH_LIST || [];
     if (list.length) {
         for (const item of list) {
             const { title, name, date } = item;

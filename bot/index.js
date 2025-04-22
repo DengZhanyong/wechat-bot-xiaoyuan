@@ -6,7 +6,7 @@ const onRoomLeave = require("./listeners/on-room-leave");
 const onRoomJoin = require("./listeners/on-room-join");
 
 const bot = WechatyBuilder.build({
-    name: "前端筱园机器人", // 名字随意
+    name: "xiaoyuan", // 名字随意
 });
 
 bot.on("scan", onScan);
@@ -17,5 +17,5 @@ bot.on("room-join", onRoomJoin);
 bot.start();
 
 module.exports = {
-    bot
+    bot,
 };

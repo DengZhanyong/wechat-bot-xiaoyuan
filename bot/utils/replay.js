@@ -97,6 +97,7 @@ async function getOneJoke() {
 // 获取今天LeetCode题目
 async function getTodayLeetCode() {
     const data = await fetchTodayLeetCode();
+
     if (!data) return "";
     const question = data.question;
     const { titleCn, titleSlug, difficulty, acRate } = question;
@@ -120,21 +121,25 @@ async function getTodayLeetCode() {
             break;
     }
     const imagePath = "bot/images/question.png";
-    await htmlText2Image(
-        `<h1>${translatedTitle}&nbsp;&nbsp;<span style="font-size:18px;font-weight:400">难度：${difficultyCn}&nbsp;&nbsp;通过率：${Number(
+    try {
+        await htmlText2Image(
+            `<h1>${translatedTitle}&nbsp;&nbsp;<span style="font-size:18px;font-weight:400">难度：${difficultyCn}&nbsp;&nbsp;通过率：${Number(
+                acRate * 100
+            ).toFixed(2)}%</span></h1>${translatedContent}
+            <div style="text-align:center;">
+                <img src="https://resource.dengzhanyong.com/images/21e1c8b3-402e-4550-99e2-0827e1dbcfaa.png" style="height:120px;"/>
+            </div>`,
+            imagePath
+        );
+        const imageFileBox = FileBox.fromFile(imagePath);
+        const url = `https://leetcode.cn/problems/${titleSlug}/description`;
+        const text = `----每日一题----\n题目：${titleCn}\n难度：${difficultyCn}\n通过率：${Number(
             acRate * 100
-        ).toFixed(2)}%</span></h1>${translatedContent}
-        <div style="text-align:center;">
-            <img src="https://resource.dengzhanyong.com/images/21e1c8b3-402e-4550-99e2-0827e1dbcfaa.png" style="height:120px;"/>
-        </div>`,
-        imagePath
-    );
-    const imageFileBox = FileBox.fromFile(imagePath);
-    const url = `https://leetcode.cn/problems/${titleSlug}/description`;
-    const text = `----每日一题----\n题目：${titleCn}\n难度：${difficultyCn}\n通过率：${Number(
-        acRate * 100
-    ).toFixed(2)}%\n解题地址：${url}`;
-    return [imageFileBox, text];
+        ).toFixed(2)}%\n解题地址：${url}`;
+        return [imageFileBox, text];
+    } catch (error) {
+        console.error(error);
+    }
 }
 
 // 随机获取leetcode题目
@@ -180,8 +185,10 @@ async function getRandomQuestion() {
 
 async function htmlText2Image(content, imagePath) {
     // 启动一个新的浏览器实例
+
     const browser = await puppeteer.launch({
         args: ["--no-sandbox"],
+        timeout: 10000,
     });
     // 创建一个新的页面
     const page = await browser.newPage();

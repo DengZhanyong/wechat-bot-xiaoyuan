@@ -15,10 +15,12 @@ async function fetchTodayLeetCode() {
                     const data = res.data.data.todayRecord[0];
                     resolve(data);
                 } catch (error) {
+                    console.error(error);
                     resolve("");
                 }
             })
-            .catch(() => {
+            .catch((error) => {
+                console.error(error);
                 resolve("");
             });
     });
